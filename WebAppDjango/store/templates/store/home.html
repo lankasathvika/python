@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookstore</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        h2 { margin-top: 40px; }
+        .book { margin-bottom: 20px; }
+        .price { background: #28a745; color: white; padding: 4px 8px; border-radius: 10px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>📚 Bookstore</h1>
+    {% for category in categories %}
+        <h2>{{ category.name }}</h2>
+        {% for book in category.book_set.all %}
+            <div class="book">
+                <a href="{% url 'book_detail' book.id %}">
+                    <strong>{{ book.title }}</strong>
+                </a>
+                <div><span class="price">₹{{ book.price }}</span></div>
+                <small>{{ book.description }}</small>
+            </div>
+        {% empty %}
+            <p>No books in this category.</p>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+</body>
+
+
+</html>

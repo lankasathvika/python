@@ -1,54 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="{{ theme }}">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>About - My Static Website</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #fff;
-      color: #333;
-    }
-    header {
-      background-color: #0077cc;
-      color: white;
-      padding: 1rem 2rem;
-      text-align: center;
-    }
-    main {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    a.button {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      background-color: #0077cc;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 1rem;
-    }
-    a.button:hover {
-      background-color: #005fa3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header>
-    <h1>About This Site</h1>
-  </header>
+    <nav>
+        <div>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+        </div>
+        <button class="theme-switch" onclick="switchTheme()" id="themeButton">
+            Switch to {{ 'Dark' if theme == 'light' else 'Light' }} Mode
+        </button>
+    </nav>
 
-  <main>
-    <section>
-      <h2>Why This Site Exists</h2>
-      <p>This static website is created to demonstrate how simple web pages can be built using just HTML and CSS.</p>
-      <a href="/" class="button">← Back to Home</a>
+    <div class="content">
+        <h1>About Us</h1>
+        
+        <div class="about-intro">
+            <p>We are a team of developers working with Flask and modern web technologies.</p>
+        </div>
 
+        <div class="grid">
+            <div class="card">
+                <h3>Our Experience</h3>
+                <p>5+ years of experience in web development and design.</p>
+            </div>
+            <div class="card">
+                <h3>Our Team</h3>
+                <p>Skilled developers and designers working together to create amazing websites.</p>
+            </div>
+            <div class="card">
+                <h3>Contact Us</h3>
+                <p>Email: contact@example.com</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+        </div>
+    </div>
 
-    </section>
-  </main>
+    <script>
+        function switchTheme() {
+            fetch('/switch-theme/')
+                .then(response => response.json())
+                .then(data => {
+                    document.documentElement.setAttribute('data-theme', data.theme);
+                    const buttonText = data.theme === 'light' ? 'Dark' : 'Light';
+                    document.getElementById('themeButton').textContent = `Switch to ${buttonText} Mode`;
+                });
+        }
+    </script>
 </body>
 </html>

@@ -1,65 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="{{ theme }}">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Static Website</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-    }
-    header {
-      background-color: #282c34;
-      color: white;
-      padding: 1rem 2rem;
-      text-align: center;
-    }
-    main {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    section {
-      margin-bottom: 2rem;
-    }
-    footer {
-      background-color: #222;
-      color: #bbb;
-      text-align: center;
-      padding: 1rem;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-    a {
-      color: #61dafb;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header>
-    <h1>Welcome to My Website</h1>
-    <p>A clean and simple static webpage</p>
-  </header>
+    <nav>
+        <div>
+            <a href="/">Home</a>
+            <a href="/about/">About</a>
+        </div>
+        <button class="theme-switch" onclick="switchTheme()" id="themeButton">
+            Switch to {{ 'Dark' if theme == 'light' else 'Light' }} Mode
+        </button>
+    </nav>
 
-  <main>
-     <section>
-      <h2>About</h2>
-      <p>This is a basic static website built with only HTML and CSS. You can host this on GitHub Pages, Netlify, or any static web hosting provider.</p>
-    </section>
+    <div class="content">
+        <h1>Welcome to Our Website</h1>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>Who We Are</h3>
+                <p>We are a passionate team dedicated to creating amazing web experiences using Flask and modern technologies.</p>
+            </div>
+            <div class="card">
+                <h3>What We Do</h3>
+                <p>We build responsive websites, develop web applications, and create user-friendly interfaces.</p>
+            </div>
+            <div class="card">
+                <h3>Our Mission</h3>
+                <p>To deliver high-quality web solutions that help businesses grow and succeed in the digital world.</p>
+            </div>
+        </div>
+    </div>
 
-    <section>
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:your.email@example.com">your.email@example.com</a></p>
-      <p><a href=/about/>Learn more about this site →</a></p>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Your Name. All rights reserved.</p>
-  </footer>
+    <script>
+        function switchTheme() {
+            fetch('/switch-theme/')
+                .then(response => response.json())
+                .then(data => {
+                    document.documentElement.setAttribute('data-theme', data.theme);
+                    const buttonText = data.theme === 'light' ? 'Dark' : 'Light';
+                    document.getElementById('themeButton').textContent = `Switch to ${buttonText} Mode`;
+                });
+        }
+    </script>
 </body>
 </html>

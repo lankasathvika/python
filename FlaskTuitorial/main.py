@@ -1,14 +1,24 @@
-from flask import Flask,render_template
+from flask import Flask, render_template, request, make_response, jsonify
 
-
-
-app = Flask("Website")
+app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template("tuitorial.html")
+    theme = request.cookies.get('theme', 'light')
+    return render_template('tuitorial.html', theme=theme)
+
 @app.route('/about/')
 def about():
-    return render_template("about.html")
+    theme = request.cookies.get('theme', 'light')
+    return render_template('about.html', theme=theme)
 
-app.run(debug=True)
+@app.route('/switch-theme/')
+def switch_theme():
+    current_theme = request.cookies.get('theme', 'light')
+    new_theme = 'dark' if current_theme == 'light' else 'light'
+    response = make_response(jsonify({'theme': new_theme}))
+    response.set_cookie('theme', new_theme)
+    return response
+
+if __name__ == '__main__':
+    app.run(debug=True)
