@@ -6,8 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
-
-
 chrome_options = Options()
 chrome_options.add_argument("--disable-search-engine-choice-screen")
 
