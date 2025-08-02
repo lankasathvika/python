@@ -1,34 +1,42 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import time
 
-# Set Chrome options (optional)
+# Setup Chrome options
 chrome_options = Options()
-chrome_options.add_argument("--disable-search-engine-choice-screen")
+chrome_options.add_experimental_option("detach", True)
 
-# ✅ Use executable_path instead of service (OLD Selenium)
-driver = webdriver.Chrome(
-    executable_path="chromedriver-win64/chromedriver-win64/chromedriver.exe",
-    chrome_options=chrome_options
-)
+# Setup ChromeDriver path (change path if needed)
+service = Service("chromedriver-win64/chromedriver.exe")  # or give full absolute path
 
-# Open login page
-driver.get("https://demoqa.com/login")
+# Create driver
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Wait and interact with page
-user_name = WebDriverWait(driver, 10).until(
-    EC.visibility_of_element_located((By.ID, 'userName')))
-password = WebDriverWait(driver, 10).until(
-    EC.visibility_of_element_located((By.ID, 'password')))
-login_button = driver.find_element(By.ID, 'login')
+# Maximize the window
+driver.maximize_window()
 
-# Enter login details
-user_name.send_keys("python-dev")
-password.send_keys("Helloworld@123")
-driver.execute_script("arguments[0].click()", login_button)
+# Step 1: Open OrangeHRM login page
+driver.get("https://opensource-demo.orangehrmlive.com/")
 
-# Keep browser open
-input("✅ Press Enter to close browser...")
-driver.quit()
+# Step 2: Wait for page to load
+time.sleep(2)
+
+# Step 3: Enter username
+username_field = driver.find_element(By.NAME, "username")
+username_field.send_keys("Admin")
+
+# Step 4: Enter password
+password_field = driver.find_element(By.NAME, "password")
+password_field.send_keys("admin123")
+
+# Step 5: Click login
+login_button = driver.find_element(By.XPATH, "//button[@type='submit']")
+login_button.click()
+
+# Step 6: Wait for dashboard to load
+time.sleep(5)
+
+# Done: You are now logged in
+
